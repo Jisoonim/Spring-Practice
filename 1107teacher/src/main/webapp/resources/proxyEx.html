@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<script
+  src="https://code.jquery.com/jquery-3.4.1.min.js"
+  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+  crossorigin="anonymous"></script>
+
+<script>
+
+  var position = {lat:37.999 , lng:127.999};
+
+  $.ajax({
+      url : "/sample/doA",
+      type : 'POST',
+      data : JSON.stringify(position),
+      contentType:"application/json",
+      dataType : 'json',
+      success : function(result) {
+    	  console.log("AAAAAAAAAAAAA");
+    	  console.log(result)
+      }
+  })
+  
+    $.ajax({
+      url : "/sample/doB",
+      type : 'POST',
+      data : JSON.stringify(position),
+      contentType:"application/json",
+      dataType : 'json',
+      success : function(result) {
+    	  console.log("BBBBBBBBBBB");
+    	  console.log(result)
+      }
+  })
+
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+<bean id="bcrypt"
+
+class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
+
+</bean>
+
+<bean id="successHandler" 
+
+class="org.zerock.security.CustomLoginSuccessHandler">
+
+</bean>
+
+<bean id="logoutSuccessHandler"
+
+class="org.zerock.security.CustomLogoutSuccessHandler">
+
+</bean>
+
+	<security:http>
+	
+	<security:logout logout-url="/customLogout" invalidate-session="true"/>
+	
+		<security:form-login login-page="/customLogin" 
+			authentication-failure-handler-ref="successHandler"/>
+		
+		
+		<security:intercept-url pattern="/sample/all" access="permitAll"/>
+		<security:intercept-url pattern="/sample/member" access="hasRole('ROLE_MEMBER')"/>
+		<security:intercept-url pattern="/sample/admin" access="hasRole('ROLE_ADMIN')"/>
+		
+		
+		<security:access-denied-handler error-page="/accessError"/>
+
+	</security:http>
+
+	<security:authentication-manager>
+	<security:authentication-provider>
+	<security:password-encoder ref="bcrypt"/>
+	<security:jdbc-user-service data-source-ref="dataSource"/>
+	<!-- 위에 jdbc-user로 hikaricp랑 연결하면 아래와같이 아이디비번 설정할 필요없음.
+	<security:user-service> 
+	<security:user name="user00" password="$2a$10$Rq3W1qbwrSQdnqYbmEfo8.g5R8mo7Y9tCEml7ug9.je0lTvd94.ta" authorities="ROLE_MEMBER"/>
+	<security:user name="admin00" password="{noop}admin00" authorities="ROLE_MEMBER,ROLE_ADMIN"/> 
+	</security:user-service>
+		 -->
+	</security:authentication-provider>
+	</security:authentication-manager>
+	
+	
+</beans>
